@@ -1,53 +1,24 @@
-
 <?php
-// Check if the form is submitted
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    // Get the menu name and description from the form
-    $menuName = $_POST["name"];
-    $menuDesc = $_POST["description"];
+$mysqli = new mysqli("localhost", "root", "", "PointOfSale");
 
-    // Connect to the database
-    $dbHost = "localhost";
-    $dbUser = "root";
-    $dbPassword = "";
-    $dbName = "PointOfSale"; // Change to your actual database name
-
-    $conn = new mysqli($dbHost, $dbUser, $dbPassword, $dbName);
-
-    // Check the database connection
-    if ($conn->connect_error) {
-        die("Connection failed: " . $conn->connect_error);
-    }
-
-    // Insert data into the database
-    $sql = "INSERT INTO ref_menu (menu_name, menu_desc) VALUES (?, ?)";
-    $stmt = $conn->prepare($sql);
-    $stmt->bind_param("ss", $menuName, $menuDesc);
-
-    if ($stmt->execute()) {
-        // Data insertion was successful
-        echo "<script>
-                Swal.fire({
-                    title: 'Success!',
-                    text: 'Menu added to the database',
-                    icon: 'success',
-                }).then(function () {
-                    window.location.href = 'your_original_page.html'; // Redirect to your original page
-                });
-              </script>";
-    } else {
-        // Data insertion failed
-        echo "<script>
-                Swal.fire({
-                    title: 'Error!',
-                    text: 'Failed to add menu to the database',
-                    icon: 'error',
-                });
-              </script>";
-    }
-
-    // Close the database connection
-    $stmt->close();
-    $conn->close();
+if ($mysqli->connect_error) {
+    die("Connection failed: " . $mysqli->connect_error);
 }
+
+$menuName = $_POST["name"];
+$menuDescription = $_POST["description"];
+
+
+$query = "INSERT INTO ref_menu (menu_name, menu_desc) VALUES (?, ?)";
+$stmt = $mysqli->prepare($query);
+$stmt->bind_param("ss", $menuName, $menuDescription);
+
+if ($stmt->execute()) {
+    echo "Menu added successfully!";
+} else {
+    echo "Error: " . $stmt->error;
+}
+
+$stmt->close();
+$mysqli->close();
 ?>

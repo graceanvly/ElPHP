@@ -6,8 +6,7 @@
     <title>PHP Menu Input</title>
     <!-- Add Bootstrap CSS -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.5.0/dist/sweetalert2.min.js"></script>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.5.0/dist/sweetalert2.min.css">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
+
  
 </head>
 <body>
@@ -32,7 +31,7 @@
 </nav>
 <div class="container">
         <h1 class="text-center">Create Menu</h1>
-        <form action="user_input.php" method="post">
+        <form action="addMenu.php" method="post">
             <div class="mb-3">
                 <label for="name" class="form-label">Menu Name</label>
                 <input type="text" class="form-control" id="name" name="name" required>
@@ -48,4 +47,41 @@
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js" integrity="sha384-eMNCOe7tC1doHpGoJtKh7z7lGz7fuP4F8nfdFvAOA6Gg/z6Y5J6XqqyGXYM2ntX5" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.min.js" integrity="sha384-pzjw8f+ua7Kw1TIq0v8FqFjcJ6pajs/rfdfs3SO+kD4Ck5BdPtF+to8xMp9Mvc9l84l+78+m696jLmfIjzj6t" crossorigin="anonymous"></script>
 </body>
+      <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        const form = document.querySelector("form");
+        form.addEventListener("submit", function (e) {
+          e.preventDefault();
+          
+          const nameInput = document.getElementById("name");
+          const descriptionInput = document.getElementById("description");
+
+          const name = nameInput.value.trim();
+          const description = descriptionInput.value.trim();
+
+          // Check character limits
+          if (name.length > 100) {
+            Swal.fire({
+              icon: "error",
+              title: "Character Limit Exceeded",
+              text: "Menu Name should be 100 characters or less.",
+            });
+            return;
+          }
+
+          if (description.length > 1000) {
+            Swal.fire({
+              icon: "error",
+              title: "Character Limit Exceeded",
+              text: "Menu Description should be 1000 characters or less.",
+            });
+            return;
+          }
+
+          // Submit the form
+          form.submit();
+        });
+      });
+    </script>
+
 </html>
