@@ -46,8 +46,7 @@
     <!-- Add Bootstrap JavaScript -->
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js" integrity="sha384-eMNCOe7tC1doHpGoJtKh7z7lGz7fuP4F8nfdFvAOA6Gg/z6Y5J6XqqyGXYM2ntX5" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.min.js" integrity="sha384-pzjw8f+ua7Kw1TIq0v8FqFjcJ6pajs/rfdfs3SO+kD4Ck5BdPtF+to8xMp9Mvc9l84l+78+m696jLmfIjzj6t" crossorigin="anonymous"></script>
-</body>
-      <script>
+    <script>
       document.addEventListener("DOMContentLoaded", function () {
         const form = document.querySelector("form");
         form.addEventListener("submit", function (e) {
@@ -84,4 +83,5 @@
       });
     </script>
 
+  </body>
 </html>
