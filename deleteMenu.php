@@ -1,33 +1,45 @@
 <?php
-    header('Content-Type: application/json');
+        header('Content-Type: application/json');
 
-    $server = "localhost";
-    $username = "root";
-    $password = "";
-    $database = "PointOfSale";
+        // Check if the request method is POST
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            // Validate and sanitize the menuId
+            $menuId = filter_input(INPUT_POST, 'menuId', FILTER_VALIDATE_INT);
+            
+            if ($menuId !== false && $menuId > 0) {
+                // Database connection details
+                $server = "localhost";
+                $username = "root";
+                $password = "";
+                $database = "PointOfSale";
 
-    $conn = new mysqli($server, $username, $password, $database);
+                // Create a database connection
+                $conn = new mysqli($server, $username, $password, $database);
 
-        if ($conn->connect_error) {
-            echo json_encode(['status' => 'error', 'message' => 'Unable to connect to the database.']);
-            exit;
-        }
+                // Check the database connection
+                if ($conn->connect_error) {
+                    echo json_encode(['success' => false, 'message' => 'Database connection error']);
+                    exit;
+                }
 
-        if(isset($_POST['id']) && $_POST['id'] != '') {
-            $id = $_POST['id'];
-
+                // Prepare and execute the DELETE query
                 $sql = "DELETE FROM ref_menu WHERE id = ?";
                 $stmt = $conn->prepare($sql);
-                $stmt->bind_param("i", $id);
+                $stmt->bind_param("i", $menuId);
 
-            if($stmt->execute()) {
-                echo json_encode(['status' => 'success']);
-                 } else {
-                    echo json_encode(['status' => 'error', 'message' => 'Failed to delete menu.']);
+                if ($stmt->execute()) {
+                    echo json_encode(['success' => true, 'message' => 'Menu deleted successfully']);
+                } else {
+                    echo json_encode(['success' => false, 'message' => 'Failed to delete menu']);
+                }
+
+                // Close the database connection
+                $stmt->close();
+                $conn->close();
+            } else {
+                echo json_encode(['success' => false, 'message' => 'Invalid menu ID']);
             }
-                     } else {
-                     echo json_encode(['status' => 'error', 'message' => 'Invalid ID.']);
-                    }
-
-    $conn->close();
+        } else {
+            echo json_encode(['success' => false, 'message' => 'Invalid request method']);
+        }
 ?>
