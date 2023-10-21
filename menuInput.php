@@ -42,6 +42,49 @@
             <button type="submit" class="btn btn-primary">Submit</button>
         </form>
     </div>
+    <div class="container">
+        <h1>Menu List</h1>
+        <div class="mb-3">
+            <input type="text" class="form-control" id="search" placeholder="Search by Name or ID">
+        </div>
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Menu Name</th>
+                    <th>Description</th>
+                    <th>Price</th>
+                </tr>
+            </thead>
+            <tbody id="menuList">
+                <?php
+                $conn = new mysqli('localhost', 'root', '', 'pointofsale');
+
+                if ($conn->connect_error) {
+                    die("Connection failed: " . $conn->connect_error);
+                }
+
+                $sql = "SELECT id, menu_name, menu_desc, price FROM ref_menu";
+                $result = $conn->query($sql);
+
+                if ($result->num_rows > 0) {
+                    while ($row = $result->fetch_assoc()) {
+                        echo "<tr>";
+                        echo "<td>" . $row["id"] . "</td>";
+                        echo "<td>" . $row["menu_name"] . "</td>";
+                        echo "<td>" . $row["menu_desc"] . "</td>";
+                        echo "<td>" . $row["price"] . "</td>";
+                        echo "<td><button class='btn btn-primary editBtn' data-id='" . $row["id"] . "'>Update</button> <button class='btn btn-danger deleteBtn' data-id='" . $row["id"] . "'>Delete</button></td>";
+                        echo "</tr>";
+                    }
+                } else {
+                    echo "<tr><td colspan='4'>No data found</td></tr>";
+                }
+
+                $conn->close();
+                ?>
+            </tbody>
+        </table>
     <div class="modal fade" id="updateModal" tabindex="-1" aria-labelledby="updateModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
