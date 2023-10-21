@@ -1,22 +1,33 @@
 <?php
-$mysqli = new mysqli("localhost", "root", "", "PointOfSale");
+    header('Content-Type: application/json');
 
-if ($mysqli->connect_error) {
-    die("Connection failed: " . $mysqli->connect_error);
-}
+    $server = "localhost";
+    $username = "root";
+    $password = "";
+    $database = "PointOfSale";
 
-$menuId = $_POST["menuId"];
+    $conn = new mysqli($server, $username, $password, $database);
 
-$query = "DELETE FROM ref_menu WHERE menu_id = ?";
-$stmt = $mysqli->prepare($query);
-$stmt->bind_param("i", $menuId);
+        if ($conn->connect_error) {
+            echo json_encode(['status' => 'error', 'message' => 'Unable to connect to the database.']);
+            exit;
+        }
 
-if ($stmt->execute()) {
-    echo "Menu deleted successfully!";
-} else {
-    echo "Error: " . $stmt->error;
-}
+        if(isset($_POST['id']) && $_POST['id'] != '') {
+            $id = $_POST['id'];
 
-$stmt->close();
-$mysqli->close();
+                $sql = "DELETE FROM ref_menu WHERE id = ?";
+                $stmt = $conn->prepare($sql);
+                $stmt->bind_param("i", $id);
+
+            if($stmt->execute()) {
+                echo json_encode(['status' => 'success']);
+                 } else {
+                    echo json_encode(['status' => 'error', 'message' => 'Failed to delete menu.']);
+            }
+                     } else {
+                     echo json_encode(['status' => 'error', 'message' => 'Invalid ID.']);
+                    }
+
+    $conn->close();
 ?>
