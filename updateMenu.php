@@ -25,11 +25,12 @@
                 
                     if($stmt->execute()) {
                         echo json_encode(['status' => 'success', 'message' => 'Menu updated successfully!']);
-                        } else {
-                            echo json_encode(['status' => 'error', 'message' => 'Failed to update menu.']);
-                        }
-                            } else {
-                                echo json_encode(['status' => 'error', 'message' => 'Invalid ID or Data.']);
-                            }
+                    } else {
+                        echo json_encode(['status' => 'error', 'message' => 'Failed to update menu.']);
+                    }
+                    } else {
+                        echo json_encode(['status' => 'error', 'message' => 'Invalid ID or Data.']);
+                    }
+
     $conn->close();
 ?>
